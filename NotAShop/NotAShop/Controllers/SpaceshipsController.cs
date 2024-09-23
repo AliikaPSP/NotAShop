@@ -21,7 +21,7 @@ namespace NotAShop.Controllers
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Typename = x.Typename,
+                    Type = x.Type,
                     BuiltDate = x.BuiltDate,
                     Crew = x.Crew,
                 });
