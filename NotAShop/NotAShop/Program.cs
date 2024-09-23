@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using NotAShop.Data;
+
 namespace NotAShop
 {
     public class Program
@@ -8,6 +11,9 @@ namespace NotAShop
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<NotAShopContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 

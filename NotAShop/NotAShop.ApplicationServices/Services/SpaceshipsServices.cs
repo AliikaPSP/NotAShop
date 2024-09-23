@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotAShop.ApplicationServices.Services
 {
-    internal class SpaceshipsServices
+    public class SpaceshipsServices
     {
     }
 }
