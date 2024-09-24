@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NotAShop.ApplicationServices\NotAShop.ApplicationServices.csproj" />
     <ProjectReference Include="..\NotAShop.Data\NotAShop.Data.csproj" />
   </ItemGroup>
 
