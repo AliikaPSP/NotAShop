@@ -46,5 +46,16 @@ namespace NotAShop.ApplicationServices.Services
 
             return domain;
         }
+
+        public async Task<Spaceship> Delete(Guid id)
+        {
+            var spaceship = await _context.Spaceships
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            _context.Spaceships.Remove(spaceship);
+            await _context.SaveChangesAsync();
+
+            return spaceship;
+        }
     }
 }
