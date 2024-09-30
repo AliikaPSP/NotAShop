@@ -9,6 +9,9 @@
         public DateTime BuiltDate { get; set; }
         public int Crew { get; set; }
         public int EnginePower { get; set; }
+        public List<IFormFile> Files { get; set; }
+        public List<ImageViewModel> Image { get; set; }
+            = new List<ImageViewModel>();
 
         //only for database
         public DateTime CreatedAt { get; set; }

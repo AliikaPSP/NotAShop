@@ -48,15 +48,24 @@ namespace NotAShop.Controllers
         {
             var dto = new SpaceshipDto()
             {
-                Id= vm.Id,
-                Name= vm.Name,
+                Id = vm.Id,
+                Name = vm.Name,
                 Type = vm.Type,
                 SpaceshipModel = vm.SpaceshipModel,
-                BuiltDate= vm.BuiltDate,
-                Crew= vm.Crew,
-                EnginePower= vm.EnginePower,
-                CreatedAt= vm.CreatedAt,
-                ModifiedAt= vm.ModifiedAt,
+                BuiltDate = vm.BuiltDate,
+                Crew = vm.Crew,
+                EnginePower = vm.EnginePower,
+                CreatedAt = vm.CreatedAt,
+                ModifiedAt = vm.ModifiedAt,
+                Files = vm.Files,
+                FilesToApiDtos = vm.Image
+                    .Select(x => new FileToApiDto
+                    {
+                        Id = x.ImageId,
+                        ExistingFilePath = x.FilePath,
+                        SpaceshipId = x.SpaceshipId,
+                    }).ToArray()
+
             };
 
             var result = await _spaceshipServices.Create(dto);

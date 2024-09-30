@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using NotAShop.Core.Domain;
 using NotAShop.Core.Dto;
+using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace NotAShop.ApplicationServices.Services
 {
-    public class FileServices
+    public class FileServices : IFileServices
     {
         private readonly IHostEnvironment _webHost;
         private readonly NotAShopContext _context;
