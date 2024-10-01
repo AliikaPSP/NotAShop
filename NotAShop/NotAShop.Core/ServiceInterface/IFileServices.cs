@@ -11,5 +11,6 @@ namespace NotAShop.Core.ServiceInterface
     public interface IFileServices
     {
         void FilesToApi(SpaceshipDto dto, Spaceship spaceship);
+        Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDto[] dtos);
     }
 }

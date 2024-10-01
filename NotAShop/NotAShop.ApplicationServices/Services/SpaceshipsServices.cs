@@ -88,6 +88,7 @@ namespace NotAShop.ApplicationServices.Services
                     ExistingFilePath = y.ExistingFilePath
                 }).ToArrayAsync();
 
+            await _fileServices.RemoveImagesFromApi(images);
             _context.Spaceships.Remove(spaceship);
             await _context.SaveChangesAsync();
 

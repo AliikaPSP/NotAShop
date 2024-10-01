@@ -19,4 +19,8 @@
     <ProjectReference Include="..\NotAShop.Data\NotAShop.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="multipleFileUpload\" />
+  </ItemGroup>
+
 </Project>
