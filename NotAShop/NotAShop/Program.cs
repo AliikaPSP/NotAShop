@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using NotAShop.ApplicationServices.Services;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
@@ -15,6 +16,7 @@ namespace NotAShop
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
+            builder.Services.AddScoped<IFileServices, FileServices>();
 
             builder.Services.AddDbContext<NotAShopContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -31,6 +33,13 @@ namespace NotAShop
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider
+                (Path.Combine(builder.Environment.ContentRootPath, "multipleFileUpload")),
+                RequestPath = "/multipleFileUpload"
+            });
 
             app.UseRouting();
 

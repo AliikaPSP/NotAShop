@@ -50,6 +50,11 @@
             @Html.DisplayFor(model => model.SpaceshipModel)
         </div>
 
+        @foreach(var images in Model.Images)
+        {
+            <partial name="_Images" model="images" />
+        }
+
     </dl>
     <a asp-action="Index" asp-controller="spaceships" class="btn btn-danger">Back</a>
 </div>
