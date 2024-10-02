@@ -11,7 +11,7 @@ namespace NotAShop.Data
 
         public DbSet<Spaceship> Spaceships { get; set; }
         public DbSet<FileToApi> FileToApis { get; set; }
-        public DbSet<Kindergarten> Kindersgarten { get; set; }
+        public DbSet<Kindergarten> Kindergartens{ get; set; }
 
     }
 }
