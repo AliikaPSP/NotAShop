@@ -16,6 +16,7 @@ namespace NotAShop
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
+            builder.Services.AddScoped<IKindergartensServices, KindergartensServices>();
             builder.Services.AddScoped<IFileServices, FileServices>();
 
             builder.Services.AddDbContext<NotAShopContext>(options =>
