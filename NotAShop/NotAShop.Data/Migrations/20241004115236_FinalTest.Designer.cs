@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NotAShop.Data;
 
@@ -11,9 +12,11 @@ using NotAShop.Data;
 namespace NotAShop.Data.Migrations
 {
     [DbContext(typeof(NotAShopContext))]
-    partial class NotAShopContextModelSnapshot : ModelSnapshot
+    [Migration("20241004115236_FinalTest")]
+    partial class FinalTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
