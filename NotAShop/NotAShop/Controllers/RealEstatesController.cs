@@ -3,7 +3,6 @@ using NotAShop.ApplicationServices.Services;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
 using NotAShop.Models.RealEstates;
-using NotAShop.Models.Spaceships;
 
 namespace NotAShop.Controllers
 {
@@ -32,7 +31,7 @@ namespace NotAShop.Controllers
                     RoomNumber = x.RoomNumber,
                     BuildingType = x.BuildingType,
                 });
-            return View();
+            return View(result);
         }
     }
 }
