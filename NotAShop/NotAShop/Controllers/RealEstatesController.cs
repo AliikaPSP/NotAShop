@@ -10,7 +10,7 @@ namespace NotAShop.Controllers
     public class RealEstatesController : Controller
     {
         private readonly NotAShopContext _context;
-        private readonly IRealEstateServices _realestateServices;
+        private readonly IRealEstateServices _realEstateServices;
         public RealEstatesController
             (
             NotAShopContext context,
@@ -18,7 +18,7 @@ namespace NotAShop.Controllers
             )
         {
             _context = context;
-            _realestateServices = realEstatesServices;
+            _realEstateServices = realEstatesServices;
         }
         public IActionResult Index()
         {
