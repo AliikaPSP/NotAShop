@@ -1,4 +1,7 @@
-﻿using NotAShop.Core.ServiceInterface;
+﻿using Microsoft.EntityFrameworkCore;
+using NotAShop.Core.Domain;
+using NotAShop.Core.Dto;
+using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
 
 
@@ -14,6 +17,32 @@ namespace NotAShop.ApplicationServices.Services
             )
         {
             _context = context;
+        }
+
+        public async Task<RealEstate> Create(RealEstateDto dto)
+        {
+            RealEstate realEstate = new();
+
+            realEstate.Id = Guid.NewGuid();
+            realEstate.Size = dto.Size;
+            realEstate.Location = dto.Location;
+            realEstate.RoomNumber = dto.RoomNumber;
+            realEstate.BuildingType = dto.BuildingType;
+            realEstate.CreatedAt = DateTime.Now;
+            realEstate.ModifiedAt = DateTime.Now;
+
+            await _context.RealEstates.AddAsync(realEstate);
+            await _context.SaveChangesAsync();
+
+            return realEstate;
+        }
+
+        public async Task<RealEstate> GetAsync(Guid id)
+        {
+            var result = await _context.RealEstates
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return result;
         }
     }
 }

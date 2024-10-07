@@ -5,5 +5,7 @@ namespace NotAShop.Core.ServiceInterface
 {
     public interface IRealEstateServices
     {
+        Task<RealEstate> Create(RealEstateDto dto);
+        Task<RealEstate> GetAsync(Guid id);
     }
 }
