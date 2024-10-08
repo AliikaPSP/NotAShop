@@ -10,26 +10,34 @@ namespace NotAShop.ApplicationServices.Services
     public class RealEstateServices : IRealEstateServices
     {
         private readonly NotAShopContext _context;
+        private readonly IFileServices _fileServices;
 
         public RealEstateServices
             (
-            NotAShopContext context
+            NotAShopContext context,
+            IFileServices fileServices
             )
         {
             _context = context;
+            _fileServices = fileServices;
         }
 
         public async Task<RealEstate> Create(RealEstateDto dto)
         {
             RealEstate realEstate = new();
 
-            realEstate.Id = dto.Id;
+            realEstate.Id = Guid.NewGuid();
             realEstate.Size = dto.Size;
             realEstate.Location = dto.Location;
             realEstate.RoomNumber = dto.RoomNumber;
             realEstate.BuildingType = dto.BuildingType;
-            realEstate.CreatedAt = dto.CreatedAt;
+            realEstate.CreatedAt = DateTime.Now;
             realEstate.ModifiedAt = DateTime.Now;
+
+            if (dto.Files != null)
+            {
+                _fileServices.UploadFilesToDatabase(dto, realEstate);
+            }
 
             await _context.RealEstates.AddAsync(realEstate);
             await _context.SaveChangesAsync();

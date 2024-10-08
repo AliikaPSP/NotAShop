@@ -12,5 +12,6 @@ namespace NotAShop.Core.ServiceInterface
     {
         void FilesToApi(SpaceshipDto dto, Spaceship spaceship);
         Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDto[] dtos);
+        void UploadFilesToDatabase(RealEstateDto dto, RealEstate domain);
     }
 }
