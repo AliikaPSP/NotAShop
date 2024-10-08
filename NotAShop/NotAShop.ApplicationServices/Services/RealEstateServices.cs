@@ -37,12 +37,31 @@ namespace NotAShop.ApplicationServices.Services
             return realEstate;
         }
 
+
         public async Task<RealEstate> GetAsync(Guid id)
         {
             var result = await _context.RealEstates
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return result;
+        }
+
+        public async Task<RealEstate> Update(RealEstateDto dto)
+        {
+            RealEstate domain = new();
+
+            domain.Id = dto.Id;
+            domain.Size = dto.Size;
+            domain.Location = dto.Location;
+            domain.RoomNumber = dto.RoomNumber;
+            domain.BuildingType = dto.BuildingType;
+            domain.CreatedAt = dto.CreatedAt;
+            domain.ModifiedAt = DateTime.Now;
+
+            _context.RealEstates.Update(domain);
+            await _context.SaveChangesAsync();
+
+            return domain;
         }
     }
 }
