@@ -3,6 +3,7 @@ using NotAShop.ApplicationServices.Services;
 using NotAShop.Core.Dto;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
+using NotAShop.Models.Kindergartens;
 using NotAShop.Models.RealEstates;
 
 namespace NotAShop.Controllers
@@ -125,5 +126,42 @@ namespace NotAShop.Controllers
             }
             return RedirectToAction(nameof(Index), vm);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var realEstate = await _realEstateServices.GetAsync(id);
+
+            if (realEstate == null)
+            {
+                return NotFound();
+            }
+
+            var vm = new RealEstateDeleteViewModel();
+
+            vm.Id = id;
+            vm.Size = realEstate.Size;
+            vm.RoomNumber = realEstate.RoomNumber;
+            vm.Location = realEstate.Location;
+            vm.BuildingType = realEstate.BuildingType;
+            vm.CreatedAt = realEstate.CreatedAt;
+            vm.ModifiedAt = realEstate.ModifiedAt;
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmation(Guid id)
+        {
+            var realEstate = await _realEstateServices.Delete(id);
+
+            if (realEstate == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

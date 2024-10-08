@@ -8,5 +8,6 @@ namespace NotAShop.Core.ServiceInterface
         Task<RealEstate> Create(RealEstateDto dto);
         Task<RealEstate> GetAsync(Guid id);
         Task<RealEstate> Update(RealEstateDto dto);
+        Task<RealEstate> Delete(Guid id);
     }
 }
