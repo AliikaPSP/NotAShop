@@ -79,6 +79,17 @@ namespace NotAShop.ApplicationServices.Services
             var realestate = await _context.RealEstates
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            var images = await _context.FileToDatabases
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new FileToDatabaseDto 
+                {
+                    Id = y.Id,
+                    ImageTitle = y.ImageTitle,
+                    RealEstateId = y.RealEstateId,
+                }).ToArrayAsync();
+
+
+            await _fileServices.RemoveImagesFromDatabase(images);
             _context.RealEstates.Remove(realestate);
             await _context.SaveChangesAsync();
 

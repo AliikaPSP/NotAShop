@@ -15,14 +15,17 @@ namespace NotAShop.Controllers
     {
         private readonly NotAShopContext _context;
         private readonly IRealEstateServices _realEstateServices;
+        private readonly IFileServices _fileServices;
         public RealEstatesController
             (
             NotAShopContext context,
-            IRealEstateServices realEstatesServices
+            IRealEstateServices realEstatesServices,
+            IFileServices fileServices
             )
         {
             _context = context;
             _realEstateServices = realEstatesServices;
+            _fileServices = fileServices;
         }
         public IActionResult Index()
         {
@@ -217,6 +220,23 @@ namespace NotAShop.Controllers
             var realEstate = await _realEstateServices.Delete(id);
 
             if (realEstate == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveImage(RealEstateImageViewModel vm)
+        {
+            var dto = new FileToDatabaseDto()
+            {
+                Id = vm.ImageId
+            };
+
+            var image = await _fileServices.RemoveImageFromDatabase(dto);
+            if (image == null) 
             {
                 return RedirectToAction(nameof(Index));
             }
