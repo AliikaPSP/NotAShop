@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NotAShop.ApplicationServices.Services;
 using NotAShop.Core.Dto;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
 using NotAShop.Models.Kindergartens;
 using NotAShop.Models.RealEstates;
+using System.Runtime.Intrinsics.X86;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NotAShop.Controllers
 {
@@ -84,6 +87,17 @@ namespace NotAShop.Controllers
             {
                 return NotFound();
             }
+            //andmebaasist esile kutsumine
+            var photos = await _context.FileToDatabases
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new RealEstateImageViewModel 
+                { 
+                    RealEstateId = y.Id,
+                    ImageId = y.Id,
+                    ImageData = y.ImageData,
+                    ImageTitle = y.ImageTitle,
+                    Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(y.ImageData))
+                }).ToArrayAsync();
 
             var vm = new RealEstateDetailsViewModel();
 
@@ -94,6 +108,8 @@ namespace NotAShop.Controllers
             vm.BuildingType = realEstate.BuildingType;
             vm.CreatedAt = realEstate.CreatedAt;
             vm.ModifiedAt = realEstate.ModifiedAt;
+            vm.Image.AddRange(photos);
+
 
             return View(vm);
         }
@@ -105,6 +121,18 @@ namespace NotAShop.Controllers
             {
                 return NotFound();
             }
+
+            var photos = await _context.FileToDatabases
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new RealEstateImageViewModel
+                {
+                    RealEstateId = y.Id,
+                    ImageId = y.Id,
+                    ImageData = y.ImageData,
+                    ImageTitle = y.ImageTitle,
+                    Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(y.ImageData))
+                }).ToArrayAsync();
+
             var vm = new RealEstateCreateUpdateViewModel();
             vm.Id = realEstate.Id;
             vm.Size = realEstate.Size;
@@ -113,12 +141,15 @@ namespace NotAShop.Controllers
             vm.BuildingType = realEstate.BuildingType;
             vm.CreatedAt = realEstate.CreatedAt;
             vm.ModifiedAt = realEstate.ModifiedAt;
+            vm.Image.AddRange(photos);
+
             return View("CreateUpdate", vm);
         }
         [HttpPost]
         public async Task<IActionResult> Update(RealEstateCreateUpdateViewModel vm)
         {
             var dto = new RealEstateDto()
+
             {
                 Id = vm.Id,
                 Size = vm.Size,
@@ -127,6 +158,15 @@ namespace NotAShop.Controllers
                 BuildingType = vm.BuildingType,
                 CreatedAt = vm.CreatedAt,
                 ModifiedAt = vm.ModifiedAt,
+                Files = vm.Files,
+                Image = vm.Image
+                    .Select(x => new FileToDatabaseDto
+                    {
+                       Id = x.ImageId,
+                       ImageData = x.ImageData,
+                       ImageTitle = x.ImageTitle,
+                       RealEstateId = x.RealEstateId,
+                    }).ToArray()
             };
             var result = await _realEstateServices.Update(dto);
             if (result == null)
@@ -146,6 +186,17 @@ namespace NotAShop.Controllers
                 return NotFound();
             }
 
+            var photos = await _context.FileToDatabases
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new RealEstateImageViewModel
+                {
+                    RealEstateId = y.Id,
+                    ImageId = y.Id,
+                    ImageData = y.ImageData,
+                    ImageTitle = y.ImageTitle,
+                    Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(y.ImageData))
+                }).ToArrayAsync();
+
             var vm = new RealEstateDeleteViewModel();
 
             vm.Id = id;
@@ -155,6 +206,7 @@ namespace NotAShop.Controllers
             vm.BuildingType = realEstate.BuildingType;
             vm.CreatedAt = realEstate.CreatedAt;
             vm.ModifiedAt = realEstate.ModifiedAt;
+            vm.Image.AddRange(photos);
 
             return View(vm);
         }

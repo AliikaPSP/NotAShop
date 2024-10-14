@@ -63,8 +63,15 @@ namespace NotAShop.ApplicationServices.Services
             domain.BuildingType = dto.BuildingType;
             domain.CreatedAt = dto.CreatedAt;
             domain.ModifiedAt = DateTime.Now;
+
+            if (dto.Files != null) 
+            {
+                _fileServices.UploadFilesToDatabase(dto, domain); 
+            }
+
             _context.RealEstates.Update(domain);
             await _context.SaveChangesAsync();
+
             return domain;
         }
         public async Task<RealEstate> Delete(Guid id)
