@@ -13,14 +13,17 @@ namespace NotAShop.Controllers
     {
         private readonly NotAShopContext _context;
         private readonly ISpaceshipsServices _spaceshipServices;
+        private readonly IFileServices _fileServices;
         public SpaceshipsController
             (
             NotAShopContext context,
-            ISpaceshipsServices spaceshipsServices
+            ISpaceshipsServices spaceshipsServices,
+            IFileServices fileServices
             )
         {
             _context = context;
             _spaceshipServices = spaceshipsServices;
+            _fileServices = fileServices;
         }
         public IActionResult Index()
         {
@@ -83,7 +86,7 @@ namespace NotAShop.Controllers
             var spaceship = await _spaceshipServices.DetailAsync(id);
             if (spaceship == null)
             {
-                return View("Error"); 
+                return View("Error");
             }
 
             var images = await _context.FileToApis
@@ -108,7 +111,7 @@ namespace NotAShop.Controllers
             vm.Images.AddRange(images);
 
             return View(vm);
-                
+
         }
 
         [HttpGet]
@@ -228,5 +231,21 @@ namespace NotAShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> RemoveImage(ImageViewModel vm)
+        {
+            var dto = new FileToApiDto()
+            {
+                Id = vm.ImageId
+            };
+
+            var image = await _fileServices.RemoveImageFromApi(dto);
+            if (image == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
-}
+}    
+    
