@@ -150,5 +150,26 @@ namespace NotAShop.ApplicationServices.Services
 
             return null;
         }
-    }
+
+        public void UploadImagesToDatabase(KindergartenDto dto, Kindergarten domain)
+        {
+            if (dto.Files != null && dto.Files.Count > 0)
+            {
+                foreach (var image in dto.Files)
+                {
+                    using (var target = new MemoryStream())
+                    {
+                        ImageToDatabase files = new ImageToDatabase()
+                        {
+                            Id = Guid.NewGuid(),
+                            ImageTitle = image.FileName,
+                            KindergartenId = domain.Id,
+                        };
+                        image.CopyTo(target);
+                        files.ImageData = target.ToArray();
+                        _context.FileToDatabases.Add(files);
+                    };
+                }
+            }
+        }
 }
