@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotAShop", "NotAShop\NotAShop.csproj", "{97182440-4EEE-4508-9BD7-F139F0A724B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotAShop", "NotAShop\NotAShop.csproj", "{97182440-4EEE-4508-9BD7-F139F0A724B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotAShop.ApplicationServices", "NotAShop.ApplicationServices\NotAShop.ApplicationServices.csproj", "{0D0F73F5-12A0-4F50-99FD-D619D0449B83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotAShop.ApplicationServices", "NotAShop.ApplicationServices\NotAShop.ApplicationServices.csproj", "{0D0F73F5-12A0-4F50-99FD-D619D0449B83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotAShop.Core", "NotAShop.Core\NotAShop.Core.csproj", "{592E7037-9BEF-4773-9ACE-FAFC602F6E63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotAShop.Core", "NotAShop.Core\NotAShop.Core.csproj", "{592E7037-9BEF-4773-9ACE-FAFC602F6E63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotAShop.Data", "NotAShop.Data\NotAShop.Data.csproj", "{AC118B70-185F-45A6-9577-71A4BEAD57C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotAShop.Data", "NotAShop.Data\NotAShop.Data.csproj", "{AC118B70-185F-45A6-9577-71A4BEAD57C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotAShopRealEstateTest", "NotAShopRealEstateTest\NotAShopRealEstateTest.csproj", "{784D5684-C0A3-4307-8E2B-A0CC6385804A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AC118B70-185F-45A6-9577-71A4BEAD57C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC118B70-185F-45A6-9577-71A4BEAD57C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC118B70-185F-45A6-9577-71A4BEAD57C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{784D5684-C0A3-4307-8E2B-A0CC6385804A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{784D5684-C0A3-4307-8E2B-A0CC6385804A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{784D5684-C0A3-4307-8E2B-A0CC6385804A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{784D5684-C0A3-4307-8E2B-A0CC6385804A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
