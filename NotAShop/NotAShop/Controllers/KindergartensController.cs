@@ -13,14 +13,17 @@ namespace NotAShop.Controllers
     {
         private readonly NotAShopContext _context;
         private readonly IKindergartensServices _kindergartensServices;
+        private readonly IFileServices _fileServices;
         public KindergartensController
             (
             NotAShopContext context,
-            IKindergartensServices kindergartensServices
+            IKindergartensServices kindergartensServices,
+            IFileServices fileServices
             )
         {
             _context = context;
             _kindergartensServices = kindergartensServices;
+            _fileServices = fileServices;
         }
         public IActionResult Index()
         {

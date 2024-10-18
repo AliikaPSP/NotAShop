@@ -16,5 +16,6 @@ namespace NotAShop.Core.ServiceInterface
         Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto);
         Task<FileToDatabase> RemoveImagesFromDatabase(FileToDatabaseDto[] dtos);
         Task<FileToApi> RemoveImageFromApi(FileToApiDto dtos);
+        void UploadImagesToDatabase(KindergartenDto dto, Kindergarten domain);
     }
 }
