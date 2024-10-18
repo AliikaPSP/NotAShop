@@ -165,7 +165,16 @@ namespace NotAShop.Controllers
                 KindergartenName = vm.KindergartenName,
                 Teacher = vm.Teacher,
                 CreatedAt = vm.CreatedAt,
-                UpdatedAt = vm.UpdatedAt
+                UpdatedAt = vm.UpdatedAt,
+                Files = vm.Files,
+                Image = vm.Image
+                    .Select(x => new ImageToDatabaseDto
+                    {
+                        Id = x.ImageId,
+                        ImageData = x.ImageData,
+                        ImageTitle = x.ImageTitle,
+                        KindergartenId = x.KindergartenId
+                    }).ToArray()
             };
 
             var result = await _kindergartensServices.Create(dto);
