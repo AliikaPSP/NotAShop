@@ -15,6 +15,7 @@ namespace NotAShop.Data
 
         public DbSet<RealEstate> RealEstates { get; set; }
         public DbSet<FileToDatabase> FileToDatabases { get; set; }
+        public DbSet<ImageToDatabase> ImageToDatabases { get; set; }
 
     }
 }
