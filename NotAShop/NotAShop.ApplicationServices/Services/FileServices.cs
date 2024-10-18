@@ -172,5 +172,33 @@ namespace NotAShop.ApplicationServices.Services
                 }
             }
         }
+
+        public async Task<ImageToDatabase> RemoveKindergartenImageFromDatabase(ImageToDatabaseDto dto)
+        {
+            var image = await _context.ImageToDatabases
+                .Where(x => x.Id == dto.Id)
+                .FirstOrDefaultAsync();
+
+            _context.ImageToDatabases.Remove(image);
+            await _context.SaveChangesAsync();
+
+            return image;
+        }
+
+        public async Task<ImageToDatabase> RemoveKindergartenImagesFromDatabase(ImageToDatabaseDto[] dtos)
+        {
+            foreach (var dto in dtos)
+            {
+                var image = await _context.ImageToDatabases
+                    .Where(x => x.Id == dto.Id)
+                    .FirstOrDefaultAsync();
+
+                _context.ImageToDatabases.Remove(image);
+                await _context.SaveChangesAsync();
+            }
+
+
+            return null;
+        }
     }
 }
