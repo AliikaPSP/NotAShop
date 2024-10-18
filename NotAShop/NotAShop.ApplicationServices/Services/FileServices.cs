@@ -28,13 +28,13 @@ namespace NotAShop.ApplicationServices.Services
         public void FilesToApi(SpaceshipDto dto, Spaceship spaceship)
         {
             if (dto.Files != null && dto.Files.Count > 0)
-            { 
-                if(!Directory.Exists(_webHost.ContentRootPath + "\\multipleFileUpload\\"))
+            {
+                if (!Directory.Exists(_webHost.ContentRootPath + "\\multipleFileUpload\\"))
                 {
                     Directory.CreateDirectory(_webHost.ContentRootPath + "\\multipleFileUpload\\");
                 }
 
-                foreach(var file in dto.Files)
+                foreach (var file in dto.Files)
                 {
                     string uploadsFolder = Path.Combine(_webHost.ContentRootPath, "multipleFileUpload");
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
@@ -100,13 +100,13 @@ namespace NotAShop.ApplicationServices.Services
         }
 
 
-        public void UploadFilesToDatabase(RealEstateDto dto, RealEstate domain) 
+        public void UploadFilesToDatabase(RealEstateDto dto, RealEstate domain)
         {
             if (dto.Files != null && dto.Files.Count > 0)
             {
                 foreach (var image in dto.Files)
                 {
-                    using (var target = new MemoryStream()) 
+                    using (var target = new MemoryStream())
                     {
                         FileToDatabase files = new FileToDatabase()
                         {
@@ -137,7 +137,7 @@ namespace NotAShop.ApplicationServices.Services
 
         public async Task<FileToDatabase> RemoveImagesFromDatabase(FileToDatabaseDto[] dtos)
         {
-            foreach(var dto in dtos)
+            foreach (var dto in dtos)
             {
                 var image = await _context.FileToDatabases
                     .Where(x => x.Id == dto.Id)
@@ -167,9 +167,10 @@ namespace NotAShop.ApplicationServices.Services
                         };
                         image.CopyTo(target);
                         files.ImageData = target.ToArray();
-                        _context.FileToDatabases.Add(files);
+                        _context.ImageToDatabases.Add(files);
                     };
                 }
             }
         }
+    }
 }
