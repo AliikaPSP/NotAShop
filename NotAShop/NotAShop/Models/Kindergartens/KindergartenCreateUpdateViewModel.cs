@@ -1,6 +1,4 @@
-﻿using NotAShop.Models.RealEstates;
-
-namespace NotAShop.Models.Kindergartens
+﻿namespace NotAShop.Models.Kindergartens
 {
     public class KindergartenCreateUpdateViewModel
     {

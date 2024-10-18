@@ -5,8 +5,6 @@ using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
 using NotAShop.Models.Kindergartens;
 using NotAShop.Core.Dto;
-using static System.Net.Mime.MediaTypeNames;
-using NotAShop.Models.RealEstates;
 
 namespace NotAShop.Controllers
 {
@@ -190,6 +188,25 @@ namespace NotAShop.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveImage(KindergartenImageViewModel vm)
+        {
+            var dto = new ImageToDatabaseDto()
+            {
+                Id = vm.ImageId
+            };
+
+            var image = await _fileServices.RemoveKindergartenImageFromDatabase(dto);
+
+            if (image == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
         [HttpGet]
         public IActionResult Create()
