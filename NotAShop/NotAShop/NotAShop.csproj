@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="multipleFileUpload\NewFolder\" />
+    <Folder Include="Macros\" />
   </ItemGroup>
 
 </Project>
