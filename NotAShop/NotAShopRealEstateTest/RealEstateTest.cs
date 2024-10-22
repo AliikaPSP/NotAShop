@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Http;
 using NotAShop.Core.Domain;
 using NotAShop.Core.Dto;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace NotAShopRealEstateTest
 {
@@ -108,6 +110,98 @@ namespace NotAShopRealEstateTest
             Assert.NotEqual(result.Id, realEstate1.Id);
         }
 
+        [Fact]
+
+        public async Task Should_UpdateRealEstate_WhenUpdateData()
+        {
+            var guid = new Guid("f0d2b871-29c3-456e-8eb2-3277a4aa791a");
+
+            RealEstateDto dto = MockRealEstateData();
+
+            RealEstate domain = new();
+
+            domain.Id = Guid.Parse("f0d2b871-29c3-456e-8eb2-3277a4aa791a");
+            domain.Size = 99;
+            domain.Location = "qwerty";
+            domain.RoomNumber = 456;
+            domain.BuildingType = "asd";
+            domain.CreatedAt = DateTime.UtcNow;
+            domain.ModifiedAt = DateTime.UtcNow;
+
+            await Svc<IRealEstateServices>().Update(dto);
+
+            Assert.Equal(guid, domain.Id);
+            Assert.DoesNotMatch(dto.Location, domain.Location);
+            Assert.DoesNotMatch(dto.RoomNumber.ToString(), domain.RoomNumber.ToString());
+            Assert.NotEqual(dto.Size, domain.Size);
+
+        }
+
+        [Fact]
+        public async Task Should_UpdateRealEstate_WhenUpdatedataVersion2()
+        {
+            //kasutame kahte mock andmebaasi
+            //ja siis võrdleme neid omavahel
+
+            RealEstateDto dto = MockRealEstateData();
+            var createRealEstate = await Svc<IRealEstateServices>().Create(dto);
+
+            RealEstateDto update = MockRealEstateData2();
+            var result = await Svc<IRealEstateServices>().Update(update);
+
+            Assert.DoesNotMatch(result.Location, createRealEstate.Location);
+            Assert.NotEqual(result.ModifiedAt, createRealEstate.ModifiedAt);
+        }
+
+
+        [Fact]
+        public async Task ShouldNot_UpdateRealEstate_WhenDidNotUpdateData()
+        {
+            RealEstateDto dto = MockRealEstateData();
+            var createRealEstate = await Svc<IRealEstateServices>().Create(dto);
+
+            RealEstateDto nullUpdate = MockNullRealEstateData();
+            var result = await Svc<IRealEstateServices>().Update(nullUpdate);
+
+            Assert.NotEqual(createRealEstate.Id, result.Id);
+            
+
+
+        }
+
+        [Fact]
+        public async Task ShouldNotUpload_XLSXFiles()
+            //Poolik
+        {
+            RealEstateDto dto = new()
+            {
+                Size = 100,
+                Location = "asd",
+                RoomNumber = 1,
+                BuildingType = "asd",
+                Files = new List<IFormFile>(),
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now,
+            };
+
+            var fileName = "test.xlsx";
+            var isXlsxFile = fileName.EndsWith(".xlsx");
+
+            
+
+            if (isXlsxFile)
+            {
+                Assert.True(isXlsxFile, "XLSX files should not be uploaded but they are uploaded.");
+            }
+            else
+            {
+                var result = await Svc<IRealEstateServices>().Update(dto);
+
+                Assert.NotNull(result);
+            }
+        }
+
+
         private RealEstateDto MockRealEstateData()
         {
             RealEstateDto realEstate = new()
@@ -121,6 +215,37 @@ namespace NotAShopRealEstateTest
             };
 
             return realEstate;
+        }
+
+        private RealEstateDto MockRealEstateData2()
+        {
+            RealEstateDto realEstate2 = new()
+            {
+                Size = 99,
+                Location = "ghj",
+                RoomNumber = 2,
+                BuildingType = "udf",
+                CreatedAt = DateTime.Now.AddYears(1),
+                ModifiedAt = DateTime.Now.AddYears(1),
+            };
+
+            return realEstate2;
+        }
+
+        private RealEstateDto MockNullRealEstateData()
+        {
+            RealEstateDto realEstate2 = new()
+            {
+                Id = null,
+                Size = 99,
+                Location = "ghj",
+                RoomNumber = 2,
+                BuildingType = "udf",
+                CreatedAt = DateTime.Now.AddYears(-1),
+                ModifiedAt = DateTime.Now.AddYears(-1),
+            };
+
+            return realEstate2;
         }
     }
 }
