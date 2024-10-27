@@ -45,7 +45,7 @@ namespace NotAShopKindergartenTest
         }
 
         [Fact]
-        public async Task Should_GetByIdRealestate_WhenReturnsEqual()
+        public async Task Should_GetByIdKindergarten_WhenReturnsEqual()
         {
             Guid databaseGuid = Guid.Parse("f0d2b871-29c3-456e-8eb2-3277a4aa791a");
             Guid guid = Guid.Parse("f0d2b871-29c3-456e-8eb2-3277a4aa791a");
@@ -58,7 +58,7 @@ namespace NotAShopKindergartenTest
         }
 
         [Fact]
-        public async Task Should_DeleteByIdKindergarten_WhenDeleteRealEstate()
+        public async Task Should_DeleteByIdKindergarten_WhenDeleteKindergarten()
         {
             //Arrange
             KindergartenDto kindergarten = MockKindergartenData();
