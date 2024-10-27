@@ -29,5 +29,61 @@ namespace NotAShopKindergartenTest
 
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public async Task ShouldNot_GetByIdKindergarten_WhenReturnsNotEqual()
+        {
+            // Arrange
+            Guid wrongGuid = Guid.Parse(Guid.NewGuid().ToString());
+            Guid guid = Guid.Parse("f0d2b871-29c3-456e-8eb2-3277a4aa791a");
+
+            //Act
+            await Svc<IKindergartensServices>().DetailAsync(guid);
+
+            //Assert
+            Assert.NotEqual(wrongGuid, guid);
+        }
+
+        [Fact]
+        public async Task Should_GetByIdRealestate_WhenReturnsEqual()
+        {
+            Guid databaseGuid = Guid.Parse("f0d2b871-29c3-456e-8eb2-3277a4aa791a");
+            Guid guid = Guid.Parse("f0d2b871-29c3-456e-8eb2-3277a4aa791a");
+
+            //Act
+            await Svc<IKindergartensServices>().DetailAsync(guid);
+
+            //Assert
+            Assert.Equal(databaseGuid, guid);
+        }
+
+        [Fact]
+        public async Task Should_DeleteByIdKindergarten_WhenDeleteRealEstate()
+        {
+            //Arrange
+            KindergartenDto kindergarten = MockKindergartenData();
+            var AddKindergarten = await Svc<IKindergartensServices>().Create(kindergarten);
+
+            //Act
+            var result = await Svc<IKindergartensServices>().Delete((Guid)AddKindergarten.Id);
+
+            //Assert
+            Assert.Equal(result, AddKindergarten);
+        }
+
+        private KindergartenDto MockKindergartenData()
+        {
+            KindergartenDto kindergarten = new()
+            {
+                GroupName = "Miisud",
+                ChildrenCount = 6,
+                KindergartenName = "Miisuaed",
+                Teacher = "Mr. Miisu",
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+            };
+
+            return kindergarten;
+        }
     }
 }
