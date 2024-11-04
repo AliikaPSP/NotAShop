@@ -3,42 +3,48 @@
     int rowNumber = 1;
 }
 
-<div>
-    <a asp-action="create" asp-controller="realestates" type="submit" class="btn btn-primary">Create</a>
-</div>
-<div class="h1">
-    RealEstates
-</div>
-<form method="post">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Nr</th>
-                <th scope="col">Size</th>
-                <th scope="col">Location</th>
-                <th scope="col">RoomNumber</th>
-                <th scope="col">BuildingType</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var realestates in Model)
-            {
-                <tr>
-                    <td>@rowNumber</td>
-                    <td>@realestates.Size</td>
-                    <td>@realestates.Location</td>
-                    <td>@realestates.RoomNumber</td>
-                    <td>@realestates.BuildingType</td>
-                    <td>
-                        <a asp-action="details" asp-controller="realestates" asp-route-id="@realestates.Id" class="btn btn-info">Details</a>
-                        <a asp-action="update" asp-controller="realestates" asp-route-id="@realestates.Id" class="btn btn-primary">Update</a>
-                        <a asp-action="delete" asp-controller="realestates" asp-route-id="@realestates.Id" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
+<div class="wrapper style2">
+    <section class="container">
+        <div class="row">
+            <div class="12u">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Real Estates</h2>
+                    <a asp-action="Create" asp-controller="RealEstates" class="button primary">Create New Real Estate</a>
+                </div>
 
-                rowNumber += 1;
-            }
-        </tbody>
-    </table>
-</form>
+                <form method="post">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Nr</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Room Number</th>
+                                <th scope="col">Building Type</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var realestate in Model)
+                            {
+                                <tr>
+                                    <td>@rowNumber</td>
+                                    <td>@realestate.Size</td>
+                                    <td>@realestate.Location</td>
+                                    <td>@realestate.RoomNumber</td>
+                                    <td>@realestate.BuildingType</td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="RealEstates" asp-route-id="@realestate.Id" class="button small">Details</a>
+                                        <a asp-action="Update" asp-controller="RealEstates" asp-route-id="@realestate.Id" class="button primary small">Update</a>
+                                        <a asp-action="Delete" asp-controller="RealEstates" asp-route-id="@realestate.Id" class="button alt small">Delete</a>
+                                    </td>
+                                </tr>
+                                rowNumber++;
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
