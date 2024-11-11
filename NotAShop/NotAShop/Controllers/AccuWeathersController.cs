@@ -38,8 +38,21 @@ namespace NotAShop.Controllers
         {
             AccuLocationWeatherResultDto dto = new();
             dto.CityName = city;
+
             _weatherForecastServices.AccuWeatherResult(dto);
-            return View();
+            //mappimine dto ja viewmodel vahel. Teha ise
+            AccuWeatherViewModel vm = new();
+
+            vm.EffectiveDate = dto.EffectiveDate;
+            vm.EffectiveEpochDate = dto.EffectiveEpochDate;
+            vm.Severity = dto.Severity;
+            vm.Text = dto.Text;
+            vm.Category = dto.Category;
+            vm.EndDate = dto.EndDate;
+            vm.EndEpochDate = dto.EndEpochDate;
+            vm.TempMinValue = dto.TempMinValue;
+            vm.TempMaxValue = dto.TempMaxValue;
+            return View(vm);
         }
     }
 }
