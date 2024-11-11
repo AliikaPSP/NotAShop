@@ -1,0 +1,21 @@
+﻿@model NotAShop.Models.ChuckNorris.ChuckNorrisIndexViewModel
+
+<div class="container">
+    <h2>Chuck Norris Joke</h2>
+
+    @if (Model != null && !string.IsNullOrEmpty(Model.JokeValue))
+    {
+        <div>
+            <h4>@Model.JokeValue</h4>
+            <img src="@Model.JokeIconUrl" alt="Chuck Norris" />
+        </div>
+    }
+    else
+    {
+        <p>No joke found!</p>
+    }
+
+    <form method="post" asp-action="SearchJoke">
+        <button type="submit">Get Another Joke</button>
+    </form>
+</div>
