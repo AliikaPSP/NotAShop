@@ -1,21 +1,23 @@
 ﻿@model NotAShop.Models.ChuckNorris.ChuckNorrisIndexViewModel
 
-<div class="container">
-    <h2>Chuck Norris Joke</h2>
+<div class="wrapper style2">
+    <section class="container" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h2>Chuck Norris Joke Generator</h2>
 
-    @if (Model != null && !string.IsNullOrEmpty(Model.JokeValue))
-    {
-        <div>
-            <h4>@Model.JokeValue</h4>
-            <img src="@Model.JokeIconUrl" alt="Chuck Norris" />
-        </div>
-    }
-    else
-    {
-        <p>No joke found!</p>
-    }
+        @if (Model != null && !string.IsNullOrEmpty(Model.JokeValue))
+        {
+            <div class="text-center">
+                <h4>@Model.JokeValue</h4>
+                <img src="@Model.JokeIconUrl" alt="Chuck Norris" />
+            </div>
+        }
+        else
+        {
+            <p>No joke found!</p>
+        }
 
-    <form method="post" asp-controller="ChuckNorris" asp-action="SearchJoke">
-        <button type="submit">Get Another Joke</button>
-    </form>
+        <form method="post" asp-controller="ChuckNorris" asp-action="SearchJoke">
+            <button type="submit" class="button primary">Get Another Joke</button>
+        </form>
+    </section>
 </div>
