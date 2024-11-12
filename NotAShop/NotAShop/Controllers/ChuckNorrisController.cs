@@ -26,10 +26,9 @@ namespace NotAShop.Controllers
         public async Task<IActionResult> SearchJoke()
         {
             var jokeDto = new ChuckNorrisDto();
-            // Fetch a random Chuck Norris joke from the service
+      
             var joke = await _chuckNorrisServices.GetRandomJokeAsync(jokeDto);
 
-            // If you want to pass the joke to the view, you can do so by creating a ViewModel
             var jokeViewModel = new ChuckNorrisIndexViewModel
             {
                 JokeValue = joke.Value,
