@@ -7,6 +7,11 @@ using System.Text.Json.Serialization;
 
 namespace NotAShop.Core.Dto
 {
+    public class FreeGamesRootDto
+        {
+            public F2PGamesDto F2PGames { get; set; }
+        }
+        
     public class F2PGamesDto
     {
         [JsonPropertyName("id")]
@@ -37,7 +42,7 @@ namespace NotAShop.Core.Dto
         public string Developer { get; set; }
 
         [JsonPropertyName("release_date")]
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
 
         [JsonPropertyName("freetogame_profile_url")]
         public string FreetogameProfileUrl { get; set; }

@@ -1,0 +1,33 @@
+﻿@model NotAShop.Models.F2PGames.F2PGamesIndexViewModel
+
+<h1>Search F2P Games</h1>
+
+<div>
+    <form method="post">
+        <div>
+            <label>Search</label>
+            <input asp-for="SearchTerm" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <div>
+        @if (Model.Games.Any())
+        {
+            <ul>
+                @foreach (var game in Model.Games)
+                {
+                    <li>
+                        <img src="@game.Thumbnail" alt="@game.Title" />
+                        <a href="@game.GameUrl">@game.Title</a>
+                        <p>@game.ShortDescription</p>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No games found.</p>
+        }
+    </div>
+</div>

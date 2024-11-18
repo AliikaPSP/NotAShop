@@ -1,7 +1,6 @@
-﻿using NotAShop.Core.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Nancy.Json;
+using NotAShop.Core.Dto;
+using NotAShop.Core.ServiceInterface;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace NotAShop.ApplicationServices.Services
 {
-    public class F2PGamesServices
+    public class F2PGamesServices : IF2PGamesServices
     {
-        public async Task<List<F2PGamesDto>> GetF2PGamesAsync()
+        public async Task<F2PGamesDto> GetF2PGamesAsync(F2PGamesDto[] dto)
         {
             string url = "https://www.freetogame.com/api/games";
 
@@ -19,7 +18,8 @@ namespace NotAShop.ApplicationServices.Services
             {
                 string json = await client.DownloadStringTaskAsync(url);
 
-                List<F2PGamesDto> gamesList = JsonSerializer.Deserialize<List<F2PGamesDto>>(json);
+                List<F2PGamesDto> gamesList = new JavaScriptSerializer().Deserialize<List<F2PGamesDto>>(json);
+                //.javascriptserializer().Deserialize
 
                 return gamesList;
             }
