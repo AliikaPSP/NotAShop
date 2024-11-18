@@ -49,10 +49,9 @@ namespace NotAShop.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchGames(F2PGamesIndexViewModel model)
         {
-            // Get all games (you can add your filter logic here to optimize if needed)
             var games = await _f2pGamesServices.GetF2PGamesAsync();
 
-            // Apply search filtering based on the user's search term
+            // search filtering based on the user's search term
             if (!string.IsNullOrEmpty(model.SearchTerm))
             {
                 games = games.Where(g => g.Title.Contains(model.SearchTerm, StringComparison.OrdinalIgnoreCase) ||
