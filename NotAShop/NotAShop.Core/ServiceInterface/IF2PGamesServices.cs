@@ -9,6 +9,6 @@ namespace NotAShop.Core.ServiceInterface
 {
     public interface IF2PGamesServices
     {
-        Task<List<F2PGamesDto>> GetF2PGamesAsync(F2PGamesDto[] dto);
+        Task<List<F2PGamesDto>> GetF2PGamesAsync();
     }
 }

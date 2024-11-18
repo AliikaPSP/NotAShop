@@ -3,14 +3,15 @@ using NotAShop.ApplicationServices.Services;
 using NotAShop.Models.F2PGames;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Core.Dto;
+using System.Linq;
 
 namespace NotAShop.Controllers
 {
     public class F2PGamesController : Controller
     {
-        private readonly F2PGamesServices _f2pGamesServices;
+        private readonly IF2PGamesServices _f2pGamesServices;
 
-        public F2PGamesController(F2PGamesServices f2pGamesServices)
+        public F2PGamesController(IF2PGamesServices f2pGamesServices)
         {
             _f2pGamesServices = f2pGamesServices;
         }
@@ -18,11 +19,9 @@ namespace NotAShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // Load all games when the page is first loaded
             var gameDto = new F2PGamesDto();
-
-            var games = await _f2pGamesServices.GetF2PGamesAsync(gameDto);
-            var model = games.Select(g => new F2PGamesIndexViewModel
+            var gamesDto = await _f2pGamesServices.GetF2PGamesAsync();
+            var gamesViewModel = gamesDto.Select(g => new F2PGamesIndexViewModel
             {
                 Id = g.Id,
                 Title = g.Title,
@@ -37,41 +36,50 @@ namespace NotAShop.Controllers
                 FreetogameProfileUrl = g.FreetogameProfileUrl
             }).ToList();
 
-            return View(new F2PGamesIndexViewModel { Games = model });
+            if (gamesViewModel == null || !gamesViewModel.Any())
+            {
+                Console.WriteLine("No games found after mapping.");
+            }
+
+            var model = new F2PGamesIndexViewModel { Games = gamesViewModel };
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> SearchGames(F2PGamesIndexViewModel model)
         {
+            // Fetching all games from the service
             var gameDto = new F2PGamesDto();
+            var gamesDto = await _f2pGamesServices.GetF2PGamesAsync();
 
-            // Get all F2P games
-            var games = await _f2pGamesServices.GetF2PGamesAsync(gameDto);
-
-            // If there is a search term, filter the games
+            // Filtering games by search term if provided
             if (!string.IsNullOrEmpty(model.SearchTerm))
             {
-                games = games.Where(g => g.Title.Contains(model.SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                gamesDto = gamesDto.Where(g => g.Title.Contains(model.SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            // Map filtered games to F2PGamesIndexViewModel
+            // Mapping filtered games to the view model
+            var gamesViewModel = gamesDto.Select(g => new F2PGamesIndexViewModel
+            {
+                Id = g.Id,
+                Title = g.Title,
+                Thumbnail = g.Thumbnail,
+                ShortDescription = g.ShortDescription,
+                GameUrl = g.GameUrl,
+                Genre = g.Genre,
+                Platform = g.Platform,
+                Publisher = g.Publisher,
+                Developer = g.Developer,
+                ReleaseDate = g.ReleaseDate,
+                FreetogameProfileUrl = g.FreetogameProfileUrl
+            }).ToList();
+
+            // Returning the filtered list of games to the view
             var viewModel = new F2PGamesIndexViewModel
             {
-                Games = games.Select(g => new F2PGamesIndexViewModel
-                {
-                    Id = g.Id,
-                    Title = g.Title,
-                    Thumbnail = g.Thumbnail,
-                    ShortDescription = g.ShortDescription,
-                    GameUrl = g.GameUrl,
-                    Genre = g.Genre,
-                    Platform = g.Platform,
-                    Publisher = g.Publisher,
-                    Developer = g.Developer,
-                    ReleaseDate = g.ReleaseDate,
-                    FreetogameProfileUrl = g.FreetogameProfileUrl
-                }).ToList(),
-                SearchTerm = model.SearchTerm // Pass the search term to the view
+                Games = gamesViewModel,
+                SearchTerm = model.SearchTerm
             };
 
             return View("Index", viewModel);

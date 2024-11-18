@@ -2,32 +2,32 @@
 
 <h1>Search F2P Games</h1>
 
-<div>
-    <form method="post">
-        <div>
-            <label>Search</label>
-            <input asp-for="SearchTerm" class="form-control" />
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-
+<form method="post" asp-action="SearchGames">
     <div>
-        @if (Model.Games.Any())
-        {
-            <ul>
-                @foreach (var game in Model.Games)
-                {
-                    <li>
-                        <img src="@game.Thumbnail" alt="@game.Title" />
-                        <a href="@game.GameUrl">@game.Title</a>
-                        <p>@game.ShortDescription</p>
-                    </li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>No games found.</p>
-        }
+        <label for="search">Search</label>
+        <input asp-for="SearchTerm" class="form-control" id="search" placeholder="Enter a game title, genre, etc." />
     </div>
-</div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (Model.Games != null && Model.Games.Any())
+{
+    <ul class="game-list">
+        @foreach (var game in Model.Games)
+        {
+            <li class="game-item">
+                <div>
+                    <img src="@game.Thumbnail" alt="@game.Title" class="game-thumbnail" />
+                    <a href="@game.GameUrl" target="_blank">@game.Title</a>
+                </div>
+                <p>@game.ShortDescription</p>
+                <p><strong>Genre:</strong> @game.Genre</p>
+                <p><strong>Platform:</strong> @game.Platform</p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No games found. Try searching for something else!</p>
+}
