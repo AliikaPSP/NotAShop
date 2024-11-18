@@ -49,36 +49,35 @@ namespace NotAShop.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchGames(F2PGamesIndexViewModel model)
         {
-            // Fetching all games from the service
-            var gameDto = new F2PGamesDto();
-            var gamesDto = await _f2pGamesServices.GetF2PGamesAsync();
+            // Get all games (you can add your filter logic here to optimize if needed)
+            var games = await _f2pGamesServices.GetF2PGamesAsync();
 
-            // Filtering games by search term if provided
+            // Apply search filtering based on the user's search term
             if (!string.IsNullOrEmpty(model.SearchTerm))
             {
-                gamesDto = gamesDto.Where(g => g.Title.Contains(model.SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                games = games.Where(g => g.Title.Contains(model.SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                          g.Genre.Contains(model.SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                          g.Platform.Contains(model.SearchTerm, StringComparison.OrdinalIgnoreCase))
+                             .ToList();
             }
 
-            // Mapping filtered games to the view model
-            var gamesViewModel = gamesDto.Select(g => new F2PGamesIndexViewModel
-            {
-                Id = g.Id,
-                Title = g.Title,
-                Thumbnail = g.Thumbnail,
-                ShortDescription = g.ShortDescription,
-                GameUrl = g.GameUrl,
-                Genre = g.Genre,
-                Platform = g.Platform,
-                Publisher = g.Publisher,
-                Developer = g.Developer,
-                ReleaseDate = g.ReleaseDate,
-                FreetogameProfileUrl = g.FreetogameProfileUrl
-            }).ToList();
-
-            // Returning the filtered list of games to the view
+            // Map filtered games to view model
             var viewModel = new F2PGamesIndexViewModel
             {
-                Games = gamesViewModel,
+                Games = games.Select(g => new F2PGamesIndexViewModel
+                {
+                    Id = g.Id,
+                    Title = g.Title,
+                    Thumbnail = g.Thumbnail,
+                    ShortDescription = g.ShortDescription,
+                    GameUrl = g.GameUrl,
+                    Genre = g.Genre,
+                    Platform = g.Platform,
+                    Publisher = g.Publisher,
+                    Developer = g.Developer,
+                    ReleaseDate = g.ReleaseDate,
+                    FreetogameProfileUrl = g.FreetogameProfileUrl
+                }).ToList(),
                 SearchTerm = model.SearchTerm
             };
 
