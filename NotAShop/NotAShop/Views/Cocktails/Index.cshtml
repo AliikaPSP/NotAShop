@@ -1,6 +1,103 @@
-﻿@model NotAShop.Models.Cocktails.CocktailsIndexViewModel
-
+﻿@using NotAShop.Core.Dto
+@model NotAShop.Models.Cocktails.CocktailsIndexViewModel
 <div class="container">
+    <h2>Cocktail List</h2>
+
+    <form method="get" asp-action="Index" class="mb-4">
+        <div class="form-group">
+            <label for="searchInput">Search for a drink:</label>
+            <input type="text" name="drinkName" id="searchInput" class="form-control" placeholder="Enter drink name" value="@Model.SearchTerm" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    @if (Model.Cocktails != null && Model.Cocktails.Any())
+    {
+        <div class="row">
+            @foreach (var cocktail in Model.Cocktails)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        @if (!string.IsNullOrEmpty(cocktail.strDrinkThumb))
+                        {
+                            <img class="card-img-top" src="@cocktail.strDrinkThumb" alt="@cocktail.strDrink" />
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@cocktail.strDrink</h5>
+                            @if (!string.IsNullOrEmpty(cocktail.strCategory))
+                            {
+                                <p><strong>Category:</strong> @cocktail.strCategory</p>
+                            }
+                            @if (!string.IsNullOrEmpty(cocktail.strGlass))
+                            {
+                                <p><strong>Glass:</strong> @cocktail.strGlass</p>
+                            }
+                            @if (!string.IsNullOrEmpty(cocktail.strAlcoholic))
+                            {
+                                <p><strong>Alcoholic:</strong> @cocktail.strAlcoholic</p>
+                            }
+                            @if (!string.IsNullOrEmpty(cocktail.strInstructions))
+                            {
+                                <p><strong>Instructions:</strong> @cocktail.strInstructions</p>
+                            }
+                            @if (!string.IsNullOrEmpty(cocktail.strIngredient1))
+                            {
+                                <p><strong>Ingredients:</strong></p>
+                                <ul>
+                                    @for (int i = 1; i <= 15; i++)
+                                    {
+                                        var ingredient = typeof(CocktailsDto).GetProperty($"strIngredient{i}")?.GetValue(cocktail)?.ToString();
+                                        if (!string.IsNullOrEmpty(ingredient))
+                                        {
+                                            <li>@ingredient</li>
+                                        }
+                                    }
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No cocktails found.</p>
+    }
+</div>
+
+@* -----
+<div class="container">
+    <h2>Cocktail list</h2>
+    <h2>Html.DisplayFor(model => model.StrDrink</h2>
+    <hr />
+
+
+    <dl class="row text-dark">
+        @if (Model.IdDrink != null && !String.IsNullOrEmpty(Model.IdDrink))
+        {
+            <div class="form-group row">
+                <label asp-for="IdDrink" class="col-sm-2 col-form-label"></label>
+                @Html.DisplayFor(model => model.IdDrink)
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.IdDrink)
+        }
+        @if (Model.StrDrinkAlternate != null && !String.IsNullOrEmpty(Model.StrDrinkAlternate))
+        {
+            <div class="form-group row">
+                <label asp-for="StrDrinkAlternative" class="col-sm-2 col-form-label"></label>
+
+            </div>
+        }
+    </dl>
+
+</div>
+
+---- *@
+@* <div class="container">
     <h1>Search Cocktails</h1>
 
     <form method="get">
@@ -44,4 +141,4 @@
     {
         <p>No cocktails found.</p>
     }
-</div>
+</div> *@

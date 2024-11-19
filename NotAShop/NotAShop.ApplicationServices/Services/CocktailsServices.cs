@@ -27,7 +27,7 @@ namespace NotAShop.ApplicationServices.Services
             {
                 try
                 {
-                    string json = await Task.Run(() => client.DownloadString(url)); // Wrap synchronous WebClient in Task.Run
+                    string json = await Task.Run(() => client.DownloadString(url));
                     var root = JsonSerializer.Deserialize<CocktailsApiResponse>(json, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true

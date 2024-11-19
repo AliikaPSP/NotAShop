@@ -13,7 +13,6 @@ namespace NotAShop.Controllers
             _cocktailsServices = cocktailsServices;
         }
 
-        // Controller actions
         public async Task<IActionResult> Index(string drinkName)
         {
             var viewModel = new CocktailsIndexViewModel();
