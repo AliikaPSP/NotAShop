@@ -1,0 +1,47 @@
+﻿@model NotAShop.Models.Cocktails.CocktailsIndexViewModel
+
+<div class="container">
+    <h1>Search Cocktails</h1>
+
+    <form method="get">
+        <div class="form-group">
+            <input type="text"
+                   name="drinkName"
+                   class="form-control"
+                   placeholder="Enter a drink name..." />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    @if (Model.Cocktails != null && Model.Cocktails.Any())
+    {
+        <h2>Results</h2>
+        <div class="row">
+            @foreach (var cocktail in Model.Cocktails)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <img class="card-img-top"
+                             src="@cocktail.strDrinkThumb"
+                             alt="@cocktail.strDrink" />
+                        <div class="card-body">
+                            <h5 class="card-title">@cocktail.strDrink</h5>
+                            <p class="card-text">
+                                <strong>Category:</strong> @cocktail.strCategory <br />
+                                <strong>Glass:</strong> @cocktail.strGlass <br />
+                                <strong>Alcoholic:</strong> @cocktail.strAlcoholic
+                            </p>
+                            <p class="card-text">
+                                <strong>Instructions:</strong> @cocktail.strInstructions
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No cocktails found.</p>
+    }
+</div>

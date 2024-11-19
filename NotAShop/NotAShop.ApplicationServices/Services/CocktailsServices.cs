@@ -1,33 +1,63 @@
 ﻿using NotAShop.Core.Dto;
+using NotAShop.Core.ServiceInterface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace NotAShop.ApplicationServices.Services
 {
-    public class CocktailsServices
+    public class CocktailsServices : ICocktailsServices
     {
+        private const string BaseUrl = "https://www.thecocktaildb.com/api/json/v1/1";
+
         public async Task<List<CocktailsDto>> GetCocktailsAsync(CocktailsDto dto)
         {
-            string cocktailApiKey = "1";
-            string url = $"https://www.thecocktaildb.com/api/json/v1/1/search.php?apikey={cocktailApiKey}&q={dto.strDrink}";
+            if (string.IsNullOrEmpty(dto?.strDrink))
+            {
+                throw new ArgumentException("Drink name cannot be null or empty.", nameof(dto.strDrink));
+            }
 
-            List<CocktailsDto> gamesList = new List<CocktailsDto>();
+            string url = $"{BaseUrl}/search.php?s={Uri.EscapeDataString(dto.strDrink)}";
+
+            List<CocktailsDto> cocktailsList = new List<CocktailsDto>();
 
             using (WebClient client = new WebClient())
             {
-                string json = client.DownloadString(url);
-                var freeGameResults = JsonSerializer.Deserialize<List<F2PGamesDto>>(json);
-                if (freeGameResults != null)
+                try
                 {
-                    gamesList.AddRange(freeGameResults);
+                    string json = await Task.Run(() => client.DownloadString(url)); // Wrap synchronous WebClient in Task.Run
+                    var root = JsonSerializer.Deserialize<CocktailsApiResponse>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    if (root?.Drinks != null)
+                    {
+                        cocktailsList.AddRange(root.Drinks);
+                    }
+                }
+                catch (WebException ex)
+                {
+                    Console.WriteLine($"Network error: {ex.Message}");
+                }
+                catch (JsonException ex)
+                {
+                    Console.WriteLine($"JSON error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Unexpected error: {ex.Message}");
                 }
             }
-            return gamesList;
+
+            return cocktailsList;
         }
+    }
+
+    public class CocktailsApiResponse
+    {
+        public List<CocktailsDto> Drinks { get; set; }
     }
 }
