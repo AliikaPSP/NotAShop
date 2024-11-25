@@ -24,6 +24,7 @@ namespace NotAShop
             builder.Services.AddScoped<IF2PGamesServices, F2PGamesServices>();
             builder.Services.AddScoped<ICocktailsServices, CocktailsServices>();
             builder.Services.AddScoped<IOpenWeatherServices, OpenWeatherServices>();
+            builder.Services.AddScoped<IEmailsServices, EmailsServices>();
 
             builder.Services.AddDbContext<NotAShopContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
