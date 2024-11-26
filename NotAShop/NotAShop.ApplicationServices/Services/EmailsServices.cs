@@ -23,36 +23,36 @@ namespace NotAShop.ApplicationServices.Services
             }
         public void SendEmail(EmailDto dto)
         {
-
             var email = new MimeMessage();
-            //otsida üles config asukoht ja sinna sisestada muutujad
-            //"EmailHost": "smtp.gmail.com",
-            //"EmailUserName": "aliika.puusepp@gmail.com",
-            //"EmailPassword"; "teie salasõna"
 
             email.From.Add(MailboxAddress.Parse(_config.GetSection("EmailUserName").Value));
             email.To.Add(MailboxAddress.Parse(dto.To));
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            email.Subject = dto.Subject;
+
+            var bodyBuilder = new BodyBuilder
             {
-                Text = dto.Body
+                TextBody = "This is the plain text version of the email.",
+                HtmlBody = dto.Body 
             };
 
-            //kindlasti kasutada mailkit.net.smtp
+            if (dto.Attachments != null && dto.Attachments.Count > 0)
+            {
+                foreach (var filePath in dto.Attachments)
+                {
+                    if (File.Exists(filePath))
+                    {
+                        bodyBuilder.Attachments.Add(filePath);
+                    }
+                }
+            }
+
+            email.Body = bodyBuilder.ToMessageBody();
 
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
-            //siin tuleb valida õige port ja kasutada securesocketOptionit
-            //autentida
-            //saada e-mail
-            //vabasta ressurss
-            {
-                smtp.Connect(_config.GetSection("EmailHost").Value, 587, MailKit.Security.SecureSocketOptions.StartTls);
-
-                smtp.Authenticate(_config.GetSection("EmailUserName").Value, _config.GetSection( "EmailPassword").Value);
-
-                smtp.Send(email);
-
-                smtp.Disconnect(true);
-            }
+            smtp.Connect(_config.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_config.GetSection("EmailUserName").Value, _config.GetSection("EmailPassword").Value);
+            smtp.Send(email);
+            smtp.Disconnect(true);
         }
     }
-}
+        }
