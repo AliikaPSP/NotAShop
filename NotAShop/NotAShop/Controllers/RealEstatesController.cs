@@ -148,7 +148,7 @@ namespace NotAShop.Controllers
 
             return View("CreateUpdate", vm);
         }
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(RealEstateCreateUpdateViewModel vm)
         {
             var dto = new RealEstateDto()
@@ -214,6 +214,7 @@ namespace NotAShop.Controllers
             return View(vm);
         }
 
+        //[HttpDelete]
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmation(Guid id)
         {
