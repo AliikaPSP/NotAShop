@@ -7,7 +7,7 @@ namespace NotAShop.Models.Accounts
     {
         [Required]
         [EmailAddress]
-        [ValidEmailDomain(allowedDomain: ".com", ErrorMessage = "Email domain must be .com")]
+        //[ValidEmailDomain(allowedDomain: ".com", ErrorMessage = "Email domain must be .com")]
         public string Email { get; set; }
 
         [Required]
@@ -16,7 +16,7 @@ namespace NotAShop.Models.Accounts
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "Password and conformation password do not match.")]
+        [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string City { get; set; }
