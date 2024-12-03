@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using NotAShop.Core.Domain;
 using NotAShop.Models.Accounts;
@@ -62,6 +63,19 @@ namespace NotAShop.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
+            return View(vm);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string? returnUrl)
+        {
+            LoginViewModel vm = new()
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+
             return View(vm);
         }
     }
