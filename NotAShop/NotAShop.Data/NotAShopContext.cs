@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NotAShop.Core.Domain;
 using System.Xml;
 
 namespace NotAShop.Data
 {
-    public class NotAShopContext : DbContext
+    public class NotAShopContext : IdentityDbContext<ApplicationUser>
     {
         public NotAShopContext(DbContextOptions<NotAShopContext> options)
             : base(options) { }
@@ -16,6 +18,7 @@ namespace NotAShop.Data
         public DbSet<RealEstate> RealEstates { get; set; }
         public DbSet<FileToDatabase> FileToDatabases { get; set; }
         public DbSet<ImageToDatabase> ImageToDatabases { get; set; }
+        public DbSet<IdentityRole> IdentiyRoles { get; set; }
 
     }
 }

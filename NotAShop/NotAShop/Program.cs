@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using NotAShop.ApplicationServices.Services;
+using NotAShop.Core.Domain;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace NotAShop
 {
@@ -25,9 +28,24 @@ namespace NotAShop
             builder.Services.AddScoped<ICocktailsServices, CocktailsServices>();
             builder.Services.AddScoped<IOpenWeatherServices, OpenWeatherServices>();
             builder.Services.AddScoped<IEmailsServices, EmailsServices>();
+            //builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<NotAShopContext>().AddDefaultTokenProviders();
+
 
             builder.Services.AddDbContext<NotAShopContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequiredLength = 3;
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            })
+            .AddEntityFrameworkStores<NotAShopContext>()
+            .AddDefaultTokenProviders()
+            .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("CustomEmailConfirmation")
+            .AddDefaultUI();
 
             var app = builder.Build();
 
