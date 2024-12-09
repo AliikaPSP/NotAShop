@@ -6,6 +6,7 @@ using NotAShop.Core.Domain;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NotAShop
 {
@@ -29,6 +30,13 @@ namespace NotAShop
             builder.Services.AddScoped<IOpenWeatherServices, OpenWeatherServices>();
             builder.Services.AddScoped<IEmailsServices, EmailsServices>();
             //builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<NotAShopContext>().AddDefaultTokenProviders();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Accounts/Login";
+                    options.LogoutPath = "/Accounts/Logout";
+                });
 
 
             builder.Services.AddDbContext<NotAShopContext>(options =>
