@@ -1,5 +1,9 @@
-﻿@* @using Microsoft.AspNetCore.Identity
-@inject SignInManager<NotAShop.Core.Domain.ApplicationUser> signInManager; *@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<NotAShop.Core.Domain.ApplicationUser> signInManager;
+@inject UserManager<NotAShop.Core.Domain.ApplicationUser> userManager;
+@{
+    var user = await userManager.GetUserAsync(User);
+};
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +42,8 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>
 
+                            @* @if (SignInManager.IsSignedIn(User)) and else{} with links *@
+
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
@@ -74,7 +80,7 @@
                             {
                                 <li class="navbar-item">
                                     <form asp-area="" asp-controller="Accounts" asp-action="Logout" method="post" class="form-inline">
-                                        <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
+                                        <button type="submit" class="btn btn-link nav-link text-dark">Logout @user.Name</button>
                                     </form>
                                 </li>
                             }

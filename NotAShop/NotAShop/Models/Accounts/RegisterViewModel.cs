@@ -10,6 +10,8 @@ namespace NotAShop.Models.Accounts
         //[ValidEmailDomain(allowedDomain: ".com", ErrorMessage = "Email domain must be .com")]
         public string Email { get; set; }
 
+        public string Name { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

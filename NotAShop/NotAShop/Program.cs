@@ -47,7 +47,7 @@ namespace NotAShop
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequiredLength = 3;
                 options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
-                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.MaxFailedAccessAttempts = 2;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             })
             .AddEntityFrameworkStores<NotAShopContext>()
