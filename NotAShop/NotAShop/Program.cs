@@ -29,6 +29,7 @@ namespace NotAShop
             builder.Services.AddScoped<ICocktailsServices, CocktailsServices>();
             builder.Services.AddScoped<IOpenWeatherServices, OpenWeatherServices>();
             builder.Services.AddScoped<IEmailsServices, EmailsServices>();
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
             //builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<NotAShopContext>().AddDefaultTokenProviders();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
