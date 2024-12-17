@@ -7,6 +7,7 @@ using NotAShop.Core.ServiceInterface;
 using NotAShop.Data;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Configuration;
 
 namespace NotAShop
 {

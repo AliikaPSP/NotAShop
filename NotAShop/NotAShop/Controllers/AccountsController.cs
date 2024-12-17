@@ -160,7 +160,6 @@ namespace NotAShop.Controllers
         {
             return View();
         }
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
@@ -168,15 +167,25 @@ namespace NotAShop.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null && await _userManager.IsEmailConfirmedAsync(user)) 
+                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var passwordResetLink = Url.Action("ResetPassword", "Accounts", new { email = model.Email, token = token }, Request.Scheme);
 
+                    // Send the password reset email
+                    await _emailSender.SendEmailAsync(
+                        model.Email,
+                        "Reset Password",
+                        $"Please reset your password by clicking <a href='{passwordResetLink}'>here</a>."
+                    );
+
                     return View("ForgotPasswordConfirmation");
                 }
+
+                // If the user doesn't exist or email is not confirmed, show confirmation anyway
                 return View("ForgotPasswordConfirmation");
             }
+
             return View(model);
         }
 
@@ -213,6 +222,56 @@ namespace NotAShop.Controllers
                 return View("ChangePasswordConfirmation");
             }
 
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null)
+            {
+                ModelState.AddModelError("", "Invalid password reset token.");
+                return View("Error");
+            }
+
+            var model = new ResetPasswordViewModel
+            {
+                Token = token,
+                Email = email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return the same view if validation fails
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Optionally show the same success message to avoid revealing user existence
+                return View("ResetPasswordConfirmation");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+            if (result.Succeeded)
+            {
+                return View("ResetPasswordConfirmation"); // Return the "successful reset" view
+            }
+
+            // If there are errors, add them to ModelState and show the form again
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
             return View(model);
         }
     }
