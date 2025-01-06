@@ -8,6 +8,7 @@ using NotAShop.Data;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
+using NotAShop.Hubs;
 
 namespace NotAShop
 {
@@ -27,6 +28,8 @@ namespace NotAShop
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSignalR();
 
             builder.Services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
             builder.Services.AddScoped<IKindergartensServices, KindergartensServices>();
@@ -95,6 +98,7 @@ namespace NotAShop
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapHub<ChatHub>("/chatHub");
 
             app.Run();
         }
