@@ -4,7 +4,7 @@
     ViewBag.Title = "User Login";
 }
 
-<div class"row">
+<div class="row">
     <div class="col-md-6">
         <h1>Local Account Login</h1>
         <hr />
@@ -21,7 +21,6 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-
 
             <div class="form-group">
                 <div class="checkbox">
@@ -43,11 +42,20 @@
     <div class="col-md-6">
         <h1>External Login</h1>
         <hr />
-        @{
-            if (Model.ExternalLogins.Count == 0)
+        @if (Model.ExternalLogins?.Count > 0)
+        {
+            @foreach (var provider in Model.ExternalLogins)
             {
-                <div>No External Login</div>
+                <form method="post" asp-controller="Accounts" asp-action="ExternalLogin" asp-route-provider="@provider.Name" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+                    <button type="submit" class="btn btn-outline-primary">
+                        Login with @provider.DisplayName
+                    </button>
+                </form>
             }
+        }
+        else
+        {
+            <div>No external login providers configured.</div>
         }
     </div>
 </div>

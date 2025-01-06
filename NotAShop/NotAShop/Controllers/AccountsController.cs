@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NotAShop.Core.Domain;
 using NotAShop.Core.ServiceInterface;
 using NotAShop.Models.Accounts;
+using System.Security.Claims;
 
 namespace NotAShop.Controllers
 {
@@ -273,6 +274,63 @@ namespace NotAShop.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            if (string.IsNullOrEmpty(provider))
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Accounts", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return RedirectToAction(nameof(Login));
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (result.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                    Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                };
+
+                var createResult = await _userManager.CreateAsync(user);
+                if (createResult.Succeeded)
+                {
+                    await _userManager.AddLoginAsync(user, info);
+                    await _signInManager.SignInAsync(user, false);
+                    return LocalRedirect(returnUrl);
+                }
+
+                return RedirectToAction(nameof(Login));
+            }
         }
     }
 }

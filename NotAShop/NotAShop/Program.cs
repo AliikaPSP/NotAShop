@@ -17,6 +17,14 @@ namespace NotAShop
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var services = builder.Services;
+            var configuration = builder.Configuration;
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+            });
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -32,6 +40,8 @@ namespace NotAShop
             builder.Services.AddScoped<IEmailsServices, EmailsServices>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
             //builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<NotAShopContext>().AddDefaultTokenProviders();
+
+
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -80,6 +90,7 @@ namespace NotAShop
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.MapControllerRoute(
                 name: "default",
