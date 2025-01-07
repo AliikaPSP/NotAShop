@@ -125,6 +125,22 @@
     </div>
 
     <!-- Main Content -->
+    ﻿
+    <div class="container">
+        <div class="row">
+            <div class="col-3">Total Views: </div>
+            <div class="col-4">
+                <span id="totalViewsCounter"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">Total Connection/Users: </div>
+            <div class="col-4">
+                <span id="totalUsersCounter"></span>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -145,3 +161,5 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/usersCount.js"></script>
